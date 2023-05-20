@@ -20,7 +20,7 @@ let client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+      client.connect();
     await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
     let toyGallery = database.collection("gallery")
