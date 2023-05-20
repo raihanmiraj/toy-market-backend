@@ -204,6 +204,10 @@ run().catch(console.dir);
 
 
 
+app.get("/hello", (req, res) => {
+  res.send("hello")
+})
+
 
 
 
