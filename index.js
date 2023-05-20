@@ -122,8 +122,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
-
-  } finally {
+    app.listen(port, () => {
+      console.log(`server is running on port ${port}`);
+    });
+  } 
+  catch (error) {
+    console.error("Error occurred while connecting to MongoDB:", error);
+    process.exit(1); // Exit the process with a non-zero status code to indicate failure
+  }
+  finally {
     await client.close();
   }
 }
@@ -138,8 +145,6 @@ app.get("/", (req, res) => {
   res.send("user server running");
 });
 
-app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
-});
+
 
 module.exports = app;
