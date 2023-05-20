@@ -128,7 +128,7 @@ app.delete("/delete/:id", async (req, res) => {
  
 
   } finally { 
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
