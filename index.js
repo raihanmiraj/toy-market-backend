@@ -15,7 +15,7 @@ app.use(express.json())
 let port = process.env.PORT || 5000;
 let { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 let uri = "mongodb+srv://raihanmiraj:Bangladesh123@cluster0.dhnvk0f.mongodb.net/?retryWrites=true&w=majority";
-let users = []; 
+let users = [];
 let client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -26,13 +26,19 @@ let client = new MongoClient(uri, {
 
 async function run() {
   try {
-      client.connect();
+    client.connect();
     await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
     let toyGallery = database.collection("gallery")
     let toys = database.collection("toys")
+    let blog = database.collection("blog")
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
+      let result = await cursor.toArray();
+      res.send(result)
+    })
+    app.get("/blog", async (req, res) => {
+      let cursor = blog.find();
       let result = await cursor.toArray();
       res.send(result)
     })
@@ -92,7 +98,7 @@ async function run() {
       res.send(JSON.stringify(result))
     })
 
-app.delete("/delete/:id", async (req, res) => {
+    app.delete("/delete/:id", async (req, res) => {
 
       let deleteId = req.params.id
       let query = {
@@ -114,13 +120,13 @@ app.delete("/delete/:id", async (req, res) => {
     })
 
 
-   app.post("/addtoy", async (req, res) => {
-      let data = { ...req.body }; 
-     let result = await toys.insertOne(data)
+    app.post("/addtoy", async (req, res) => {
+      let data = { ...req.body };
+      let result = await toys.insertOne(data)
       res.send(JSON.stringify(result))
     })
 
- 
+
     app.get("/mytoys/aesc/:email", async (req, res) => {
       let cursor = toys.find({ selleremail: req.params.email }).sort({ price: 1 });
       let result = await cursor.toArray();
@@ -132,9 +138,9 @@ app.delete("/delete/:id", async (req, res) => {
       res.send(result);
     });
 
- 
 
-  } finally { 
+
+  } finally {
     // await client.close();
   }
 }
