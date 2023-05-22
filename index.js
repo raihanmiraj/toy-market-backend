@@ -1,7 +1,5 @@
 let express = require("express")
 let cors = require("cors")
-
-let json = require("./test.json")
 let app = express();
 const corsConfig = {
   origin: '*',
