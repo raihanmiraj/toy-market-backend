@@ -3,14 +3,14 @@ let cors = require("cors")
 
 let json = require("./test.json")
 let app = express();
-// const corsConfig = {
-//   origin: '',
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE']
-// }
-// app.use(cors(corsConfig))
-// app.options("", cors(corsConfig))
-app.use(cors())
+const corsConfig = {
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("", cors(corsConfig))
+// app.use(cors())
 app.use(express.json())
 let port = process.env.PORT || 5000;
 let { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
