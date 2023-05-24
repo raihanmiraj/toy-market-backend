@@ -25,12 +25,9 @@ var toys =null;
 var toyGallery =null; 
 var blog =null;
 async function run() {
-  app.listen(port, () => {
-    console.log(`server is running on port ${port}`)
-  })
   try {
-      client.connect();
-    await client.db("toy_market").command({ ping: 1 });
+    await client.connect();
+    // await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
       toyGallery = database.collection("gallery")
       toys = database.collection("toys")
@@ -166,6 +163,8 @@ app.get("/", (req, res) => {
 })
 
 
-
+app.listen(port, () => {
+  console.log(`server is running on port ${port}`)
+})
 
 module.exports = app;
