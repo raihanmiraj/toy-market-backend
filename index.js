@@ -26,7 +26,7 @@ var toyGallery =null;
 var blog =null;
 async function run() {
   try {
-    await client.connect();
+      client.connect();
     // await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
       toyGallery = database.collection("gallery")
