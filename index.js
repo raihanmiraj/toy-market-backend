@@ -14,37 +14,37 @@ let port = process.env.PORT || 5000;
 let { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 let uri = "mongodb+srv://raihanmiraj:Bangladesh123@cluster0.dhnvk0f.mongodb.net/?retryWrites=true&w=majority";
 let users = [];
-let client =null 
-var toys =null;
-var toyGallery =null; 
-var blog =null;
+let client = null
+var toys = null;
+var toyGallery = null;
+var blog = null;
 async function run() {
   try {
 
-  if(!client){
-    client=  new MongoClient(uri, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
-      useNewUrlParser :true,
-      useUnifiedTopology:true,
-      maxPoolSize:10
-    });
-  }
-      // client.connect();
+  
+      client = new MongoClient(uri, {
+        serverApi: {
+          version: ServerApiVersion.v1,
+          strict: true,
+          deprecationErrors: true,
+        },
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        maxPoolSize: 10
+      });
+ 
+    // client.connect();
     // await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
-      toyGallery = database.collection("gallery")
-      toys = database.collection("toys")
-      blog = database.collection("blog")
-      app.get("/toys", async (req, res) => {
-        let cursor = toys.find();
-        let result = await cursor.toArray();
-        res.send(result);
-  
-      });
+    toyGallery = database.collection("gallery")
+    toys = database.collection("toys")
+    blog = database.collection("blog")
+    app.get("/toys", async (req, res) => {
+      let cursor = toys.find();
+      let result = await cursor.toArray();
+      res.send(result);
+
+    });
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
       let result = await cursor.toArray();
@@ -66,7 +66,7 @@ async function run() {
 
     });
 
-  
+
 
     app.get("/toys/:limit", async (req, res) => {
       let cursor = toys.find();
