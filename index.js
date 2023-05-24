@@ -14,41 +14,43 @@ let port = process.env.PORT || 5000;
 let { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 let uri = "mongodb+srv://raihanmiraj:Bangladesh123@cluster0.dhnvk0f.mongodb.net/?retryWrites=true&w=majority";
 let users = [];
-let client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-  useNewUrlParser :true,
-  useUnifiedTopology:true,
-  maxPoolSize:10
-});
+let client =null 
 var toys =null;
 var toyGallery =null; 
 var blog =null;
 async function run() {
   try {
+
+    client=  new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+      useNewUrlParser :true,
+      useUnifiedTopology:true,
+      maxPoolSize:10
+    });
       // client.connect();
-    //  client.db("toy_market").command({ ping: 1 });
+    // await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
       toyGallery = database.collection("gallery")
       toys = database.collection("toys")
       blog = database.collection("blog")
       app.get("/toys", async (req, res) => {
         let cursor = toys.find();
-        let result =  cursor.toArray();
+        let result = await cursor.toArray();
         res.send(result);
   
       });
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result)
     })
     app.get("/blog", async (req, res) => {
       let cursor = blog.find();
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result)
     })
 
@@ -57,7 +59,7 @@ async function run() {
         toyname:
           { $regex: req.params.search, $options: "i" }
       });
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result);
 
     });
@@ -66,7 +68,7 @@ async function run() {
 
     app.get("/toys/:limit", async (req, res) => {
       let cursor = toys.find();
-      let result =  cursor.limit(parseInt(req.params.limit)).toArray();
+      let result = await cursor.limit(parseInt(req.params.limit)).toArray();
       res.send(result);
 
     });
@@ -74,14 +76,14 @@ async function run() {
     app.get("/toy/:toyid", async (req, res) => {
       let toyid = req.params.toyid
       let cursor = toys.findOne({ _id: new ObjectId(toyid) });
-      let result =  cursor
+      let result = await cursor
       res.send(result)
     })
 
 
     app.get("/mytoys/:email", async (req, res) => {
       let cursor = toys.find({ selleremail: req.params.email });
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result);
 
     });
@@ -98,7 +100,7 @@ async function run() {
           ...req.body
         },
       };
-      let result =  toys.updateOne(filter, updateDoc, options);
+      let result = await toys.updateOne(filter, updateDoc, options);
       res.send(JSON.stringify(result))
     })
 
@@ -109,7 +111,7 @@ async function run() {
         _id: new ObjectId(deleteId)
       }
 
-      let deleteData =  toys.deleteOne(query);
+      let deleteData = await toys.deleteOne(query);
       if (deleteData.deletedCount == 1) {
         let indexToDelete = users.findIndex(item => item._id == deleteId);
         if (indexToDelete > -1) {
@@ -126,26 +128,26 @@ async function run() {
 
     app.post("/addtoy", async (req, res) => {
       let data = { ...req.body };
-      let result =  toys.insertOne(data)
+      let result = await toys.insertOne(data)
       res.send(JSON.stringify(result))
     })
 
 
     app.get("/mytoys/aesc/:email", async (req, res) => {
       let cursor = toys.find({ selleremail: req.params.email }).sort({ price: 1 });
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result);
     });
     app.get("/mytoys/desc/:email", async (req, res) => {
       let cursor = toys.find({ selleremail: req.params.email }).sort({ price: -1 });
-      let result =  cursor.toArray();
+      let result = await cursor.toArray();
       res.send(result);
     });
 
 
 
   } finally {
-    //  client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
