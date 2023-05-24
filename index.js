@@ -28,9 +28,9 @@ async function run() {
           strict: true,
           deprecationErrors: true,
         },
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        maxPoolSize: 10
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
+        // maxPoolSize: 10
       });
  
     // client.connect();
