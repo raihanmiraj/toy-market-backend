@@ -19,15 +19,23 @@ let client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
+  useNewUrlParser :true,
+  useUnifiedTopology:true,
+  maxPoolSize:10
 });
 var toys =null;
 var toyGallery =null; 
 var blog =null;
 async function run() {
   try {
-      client.connect();
-    // await client.db("toy_market").command({ ping: 1 });
+    client.connect((error)=>{
+      if(error){
+        console.log(error)
+        return;
+      }
+    });
+    await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
       toyGallery = database.collection("gallery")
       toys = database.collection("toys")
