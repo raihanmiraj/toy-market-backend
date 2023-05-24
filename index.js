@@ -37,8 +37,14 @@ async function run() {
     });
     await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
-      toyGallery = database.collection("gallery")
+    app.get("/toys", async (req, res) => {
       toys = database.collection("toys")
+      let cursor = toys.find();
+      let result = await cursor.toArray();
+      res.send(result);
+
+    });
+      toyGallery = database.collection("gallery") 
       blog = database.collection("blog")
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
@@ -61,12 +67,7 @@ async function run() {
 
     });
 
-    app.get("/toys", async (req, res) => {
-      let cursor = toys.find();
-      let result = await cursor.toArray();
-      res.send(result);
-
-    });
+   
 
     app.get("/toys/:limit", async (req, res) => {
       let cursor = toys.find();
