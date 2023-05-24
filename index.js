@@ -21,6 +21,7 @@ var blog =null;
 async function run() {
   try {
 
+  if(!client){
     client=  new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -31,6 +32,7 @@ async function run() {
       useUnifiedTopology:true,
       maxPoolSize:10
     });
+  }
       // client.connect();
     // await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
