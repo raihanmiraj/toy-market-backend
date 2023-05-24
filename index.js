@@ -22,14 +22,16 @@ let client = new MongoClient(uri, {
   }
 });
 var toys =null;
+var toyGallery =null; 
+var blog =null;
 async function run() {
   try {
       client.connect();
     await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
-    let toyGallery = database.collection("gallery")
+      toyGallery = database.collection("gallery")
       toys = database.collection("toys")
-    let blog = database.collection("blog")
+      blog = database.collection("blog")
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
       let result = await cursor.toArray();
