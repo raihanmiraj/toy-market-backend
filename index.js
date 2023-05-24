@@ -21,14 +21,14 @@ let client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
+var toys =null;
 async function run() {
   try {
       client.connect();
     await client.db("toy_market").command({ ping: 1 });
     let database = client.db("toy_market");
     let toyGallery = database.collection("gallery")
-    let toys = database.collection("toys")
+      toys = database.collection("toys")
     let blog = database.collection("blog")
     app.get("/gallery", async (req, res) => {
       let cursor = toyGallery.find();
@@ -164,3 +164,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`server is running on port ${port}`)
 })
+
+module.exports = app;
